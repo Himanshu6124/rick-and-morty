@@ -16,31 +16,27 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDetailBinding.inflate(layoutInflater)
-
-
-        val character : Character = args.character
-
-        Glide.with(this).load(character.image).into(binding.characterImage)
-        binding.characterName.text = character.name
-        binding.characterStatus.text = character.status
-        binding.characterSpecies.text = character.species
-        binding.characterGender.text = character.gender
-        binding.characterOrigin.text = character.origin.name
-        binding.characterLocation.text = character.location.name
-
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val character : Character = args.character
+
+        binding.apply {
+            nameTextView.text = character.name
+            statusTextView.text = getString(R.string.status, character.status)
+            speciesTextView.text = getString(R.string.species, character.species)
+            genderTextView.text = getString(R.string.gender, character.gender)
+            originTextView.text = getString(R.string.origin, character.origin.name)
+            locationTextView.text = getString(R.string.location, character.location.name)
+            Glide.with(this@DetailFragment).load(character.image).into(imageView)
+        }
+    }
 }

@@ -10,8 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.himanshu.rickandmorty.databinding.FragmentMainBinding
 
@@ -19,7 +18,7 @@ import com.himanshu.rickandmorty.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
     private val TAG = "MainFragment"
 
-    private lateinit var characterViewModel : CharacterViewModel
+    private lateinit var characterViewModel: CharacterViewModel
 
     private lateinit var binding: FragmentMainBinding
 
@@ -28,18 +27,23 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val cache = RetrofitInstance.provideCache(requireContext())
-        val client = RetrofitInstance.provideOkHttpClient(requireContext(),cache)
+        val client = RetrofitInstance.provideOkHttpClient(requireContext(), cache)
         val retrofit = RetrofitInstance.provideRetrofit(client)
         val service = RetrofitInstance.provideApiService(retrofit)
         val repo = CharacterRepository(service)
-        characterViewModel = ViewModelProvider(this,CharacterViewModelFactory(repo))[CharacterViewModel::class.java]
+        characterViewModel =
+            ViewModelProvider(this, CharacterViewModelFactory(repo))[CharacterViewModel::class.java]
 
         characterViewModel.getCharacters(characterViewModel.currentPage)
         addSubscribers()
         addListeners()
-        return binding.root
     }
 
     private fun addListeners() {
@@ -56,20 +60,26 @@ class MainFragment : Fragment() {
         })
 
         binding.getNextList.setOnClickListener {
-            if(characterViewModel.currentPage == 1){
-                Toast.makeText(requireContext(),"You are on first page",Toast.LENGTH_SHORT).show()
-            }
-            else{
+            if (characterViewModel.currentPage == 42) {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.last_page_warning),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 characterViewModel.currentPage++
                 characterViewModel.getCharacters(characterViewModel.currentPage)
             }
         }
 
         binding.getPrevList.setOnClickListener {
-            if(characterViewModel.currentPage == 42){
-                Toast.makeText(requireContext(),"You are on first page",Toast.LENGTH_SHORT).show()
-            }
-            else {
+            if (characterViewModel.currentPage == 1) {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.first_page_warning),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 characterViewModel.currentPage--
                 characterViewModel.getCharacters(characterViewModel.currentPage)
             }
@@ -85,12 +95,11 @@ class MainFragment : Fragment() {
                 val action = MainFragmentDirections.actionMainFragmentToDetailFragment(character)
                 findNavController().navigate(action)
             }
-            binding.recyclerView.layoutManager = LinearLayoutManager(
+            binding.recyclerView.layoutManager = GridLayoutManager(
                 activity,
-                RecyclerView.VERTICAL, false
+                2
             )
             binding.recyclerView.adapter = adapter
-
         }
 
         characterViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

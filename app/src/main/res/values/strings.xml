@@ -5,4 +5,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="go_previous">Go previous</string>
     <string name="go_next">Go Next</string>
+    <string name="first_page_warning">You are on first page</string>
+    <string name="last_page_warning">You have reached to last page</string>
+    <string name="status">Status: %1$s</string>
+    <string name="species">Species: %1$s</string>
+    <string name="gender">Gender: %1$s</string>
+    <string name="origin">Origin: %1$s</string>
+    <string name="location">Location: %1$s</string>
 </resources>
