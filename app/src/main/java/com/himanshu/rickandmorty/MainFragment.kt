@@ -18,17 +18,8 @@ import com.himanshu.rickandmorty.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
     private val TAG = "MainFragment"
 
-    private val characterRepository =
-        CharacterRepository(RetrofitInstance.apiService)
+    private lateinit var characterViewModel : CharacterViewModel
 
-    private val characterViewModel by lazy {
-        ViewModelProvider(
-            this,
-            CharacterViewModelFactory(
-                characterRepository
-            )
-        )[CharacterViewModel::class.java]
-    }
     private lateinit var binding: FragmentMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +31,14 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
+
+        val cache = RetrofitInstance.provideCache(requireContext())
+        val client = RetrofitInstance.provideOkHttpClient(requireContext(),cache)
+        val retrofit = RetrofitInstance.provideRetrofit(client)
+        val service = RetrofitInstance.provideApiService(retrofit)
+        val repo = CharacterRepository(service)
+        characterViewModel = ViewModelProvider(this,CharacterViewModelFactory(repo))[CharacterViewModel::class.java]
+
         characterViewModel.getCharacters(characterViewModel.currentPage)
         addSubscribers()
         addListeners()

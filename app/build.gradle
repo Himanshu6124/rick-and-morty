@@ -62,6 +62,9 @@ dependencies {
     /* to use glide library  */
     implementation libs.glide
 
+    implementation libs.okhttp
+    implementation libs.logging.interceptor
+
     implementation libs.androidx.navigation.fragment.ktx.v235
     implementation libs.androidx.navigation.ui.ktx.v235
 
