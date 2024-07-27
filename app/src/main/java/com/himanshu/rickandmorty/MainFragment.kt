@@ -43,6 +43,8 @@ class MainFragment : Fragment() {
             Log.i(TAG, "Response is $it")
             val adapter = CharacterAdapter(it.results){character ->
                 Log.i(TAG,"character clicked ${character.name}")
+//                val action = MainFragmentDirections.actionMainFragmentToDetailFragment(character)
+//                findNavController().navigate(action)
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(activity,
                 RecyclerView.VERTICAL,false)
