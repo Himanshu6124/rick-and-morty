@@ -27,7 +27,7 @@ object RetrofitInstance {
             .addInterceptor { chain ->
                 var request = chain.request()
                 request = if (hasNetwork(context) == true)
-                    request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
+                    request.newBuilder().header("Cache-Control", "public, max-age=" + 100).build()
                 else
                     request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
                 Log.i(TAG,"provide Http client $request")

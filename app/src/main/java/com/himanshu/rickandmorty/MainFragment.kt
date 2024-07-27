@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,10 +22,6 @@ class MainFragment : Fragment() {
     private lateinit var characterViewModel : CharacterViewModel
 
     private lateinit var binding: FragmentMainBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,12 +56,20 @@ class MainFragment : Fragment() {
         })
 
         binding.getNextList.setOnClickListener {
-            characterViewModel.currentPage++
-            characterViewModel.getCharacters(characterViewModel.currentPage)
+            if(characterViewModel.currentPage == 1){
+                Toast.makeText(requireContext(),"You are on first page",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                characterViewModel.currentPage++
+                characterViewModel.getCharacters(characterViewModel.currentPage)
+            }
         }
 
         binding.getPrevList.setOnClickListener {
-            if (characterViewModel.currentPage > 1) {
+            if(characterViewModel.currentPage == 42){
+                Toast.makeText(requireContext(),"You are on first page",Toast.LENGTH_SHORT).show()
+            }
+            else {
                 characterViewModel.currentPage--
                 characterViewModel.getCharacters(characterViewModel.currentPage)
             }
