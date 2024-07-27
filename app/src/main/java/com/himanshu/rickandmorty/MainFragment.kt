@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himanshu.rickandmorty.databinding.FragmentMainBinding
@@ -43,8 +44,8 @@ class MainFragment : Fragment() {
             Log.i(TAG, "Response is $it")
             val adapter = CharacterAdapter(it.results){character ->
                 Log.i(TAG,"character clicked ${character.name}")
-//                val action = MainFragmentDirections.actionMainFragmentToDetailFragment(character)
-//                findNavController().navigate(action)
+                val action = MainFragmentDirections.actionMainFragmentToDetailFragment(character)
+                findNavController().navigate(action)
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(activity,
                 RecyclerView.VERTICAL,false)
@@ -52,11 +53,13 @@ class MainFragment : Fragment() {
 
         }
 
-        characterViewModel.getCharacters(1)
-
-        binding.getData.setOnClickListener {
-            characterViewModel.getCharacters(3)
+        characterViewModel.isLoading.observe(viewLifecycleOwner){isLoading ->
+            if(isLoading) binding.loader.visibility = View.VISIBLE
+            else binding.loader.visibility = View.GONE
         }
+
+        characterViewModel.getCharacters(characterViewModel.currentPage)
+
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { characterViewModel.searchCharacters(it) }
@@ -68,6 +71,17 @@ class MainFragment : Fragment() {
             }
         })
 
+        binding.getNextList.setOnClickListener {
+            characterViewModel.currentPage++
+            characterViewModel.getCharacters(characterViewModel.currentPage)
+        }
+
+        binding.getPrevList.setOnClickListener {
+            if(characterViewModel.currentPage > 1){
+                characterViewModel.currentPage--
+                characterViewModel.getCharacters(characterViewModel.currentPage)
+            }
+        }
 
         return binding.root
     }
