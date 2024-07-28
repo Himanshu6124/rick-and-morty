@@ -31,11 +31,11 @@ class DetailFragment : Fragment() {
 
         binding.apply {
             nameTextView.text = character.name
-            statusTextView.text = getString(R.string.status, character.status)
-            speciesTextView.text = getString(R.string.species, character.species)
-            genderTextView.text = getString(R.string.gender, character.gender)
-            originTextView.text = getString(R.string.origin, character.origin.name)
-            locationTextView.text = getString(R.string.location, character.location.name)
+            statusTextView.text = character.status
+            speciesTextView.text = character.species
+            genderTextView.text =character.gender
+            originTextView.text = character.origin.name
+            locationTextView.text = character.location.name
             Glide.with(this@DetailFragment).load(character.image).into(imageView)
         }
     }

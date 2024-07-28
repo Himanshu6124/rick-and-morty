@@ -41,7 +41,6 @@ class MainFragment : Fragment() {
         characterViewModel =
             ViewModelProvider(this, CharacterViewModelFactory(repo))[CharacterViewModel::class.java]
 
-        characterViewModel.getCharacters(characterViewModel.currentPage)
         addSubscribers()
         addListeners()
     }
@@ -55,7 +54,8 @@ class MainFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                newText?.let { characterViewModel.searchCharacters(it) }
+                return true
             }
         })
 

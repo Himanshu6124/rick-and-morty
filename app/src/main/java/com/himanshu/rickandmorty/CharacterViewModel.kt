@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.himanshu.rickandmorty.model.CharacterResponse
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
@@ -16,13 +18,16 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean>  = _isError
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
+    private var searchJob: Job? = null
 
     var currentPage = 1
+
+    init {
+        getCharacters(currentPage)
+    }
 
     fun getCharacters(page :Int){
         viewModelScope.launch {
@@ -34,7 +39,6 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
             }
             catch (ex : Exception){
                 Log.e(TAG,"exception occurred in get characters")
-                _isError.postValue(true)
                 _isLoading.postValue(false)
                 _errorMessage.value = ex.message
             }
@@ -42,7 +46,9 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
     }
 
     fun searchCharacters(name :String){
-        viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(300)
             try {
                 _isLoading.postValue(true)
                 val res = repository.searchCharacters(name)
@@ -51,7 +57,6 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
             }
             catch (ex : Exception){
                 Log.e(TAG,"exception occurred in search characters")
-                _isError.postValue(true)
                 _isLoading.postValue(false)
                 _errorMessage.value = ex.message
             }
