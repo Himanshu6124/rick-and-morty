@@ -112,5 +112,9 @@ class MainFragment : Fragment() {
                 Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
             }
         }
+
+//        characterViewModel.currentPage.observe(viewLifecycleOwner){ pageNumber->
+//            binding.pageNumber.text = getString(R.string.page_42, pageNumber.toString())
+//        }
     }
 }

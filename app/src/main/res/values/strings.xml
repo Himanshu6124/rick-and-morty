@@ -12,4 +12,5 @@
     <string name="gender">Gender: %1$s</string>
     <string name="origin">Origin: %1$s</string>
     <string name="location">Location: %1$s</string>
+    <string name="page_42">Page: %1$s/42</string>
 </resources>
