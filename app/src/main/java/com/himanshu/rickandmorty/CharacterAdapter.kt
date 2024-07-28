@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.himanshu.rickandmorty.model.Character
 
-class CharacterAdapter(private val characters: List<Character>, private val onItemClick: (Character) -> Unit) :
+class CharacterAdapter( private val onItemClick: (Character) -> Unit) :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
+
+    private var characters: List<Character> = emptyList()
 
     class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.character_name)
@@ -33,4 +35,9 @@ class CharacterAdapter(private val characters: List<Character>, private val onIt
     }
 
     override fun getItemCount() = characters.size
+
+    fun submitList(results: List<Character>) {
+        characters = results
+        notifyDataSetChanged()  // this can be optimised based on dataset
+    }
 }

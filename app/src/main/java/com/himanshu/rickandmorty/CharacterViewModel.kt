@@ -11,66 +11,72 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
-    private val TAG = "CharacterViewModel"
-    private val _characters  = MutableLiveData<CharacterResponse>()
-    val characters  : LiveData<CharacterResponse> = _characters
+    private val tag = "CharacterViewModel"
+
+    private val _characters = MutableLiveData<CharacterResponse>()
+    val characters: LiveData<CharacterResponse> = _characters
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
+
     private var searchJob: Job? = null
 
-    var currentPage = MutableLiveData(1)
+    private val _currentPage = MutableLiveData(1)
+    val currentPage: LiveData<Int> = _currentPage
 
     init {
-        getCharacters(currentPage.value?:1)
+        getCharacters(_currentPage.value ?: 1)
     }
 
-    private fun getCharacters(page :Int){
-        Log.i(TAG,"PAge is $page ")
+    private fun getCharacters(page: Int) {
         viewModelScope.launch {
             try {
-                _isLoading.postValue(true)
+                _isLoading.value = true
+                _errorMessage.value = null // Clear previous errors
                 val res = repository.getCharacters(page)
-                Log.i(TAG,"res for $page is $res")
-                _isLoading.postValue(false)
                 _characters.postValue(res)
-            }
-            catch (ex : Exception){
-                Log.e(TAG,"exception occurred in get characters")
-                _isLoading.postValue(false)
+            } catch (ex: Exception) {
+                Log.e(tag, "exception occurred in get characters", ex)
                 _errorMessage.value = ex.message
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
-    fun searchCharacters(name :String){
+    fun searchCharacters(name: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(300)
             try {
-                _isLoading.postValue(true)
+                _isLoading.value = true
+                _errorMessage.value = null // Clear previous errors
                 val res = repository.searchCharacters(name)
-                _isLoading.postValue(false)
                 _characters.postValue(res)
-            }
-            catch (ex : Exception){
-                Log.e(TAG,"exception occurred in search characters")
-                _isLoading.postValue(false)
+            } catch (ex: Exception) {
+                Log.e(tag, "exception occurred in search characters", ex)
                 _errorMessage.value = ex.message
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun getNextPage() {
-        currentPage.value = currentPage.value?.plus(1)
-        getCharacters(currentPage.value?:1)
+        val nextPage = (_currentPage.value ?: 1) + 1
+        _currentPage.value = nextPage
+        getCharacters(nextPage)
     }
+
     fun getPrevPage() {
-        currentPage.value = currentPage.value?.minus(1)
-        getCharacters(currentPage.value?:1)
+        val prevPage = (_currentPage.value ?: 1) - 1
+        _currentPage.value = prevPage
+        getCharacters(prevPage)
+    }
+    companion object{
+        const val TOTAL_PAGES = 42
     }
 }

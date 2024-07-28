@@ -2,60 +2,62 @@ package com.himanshu.rickandmorty
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.Log
+import android.net.NetworkCapabilities
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
-
-/* to create singleton instance of retrofit lazily  */
+/* create retrofit instance for api call */
 
 object RetrofitInstance {
-    val TAG = "RetrofitInstance"
+    private const val BASE_URL = "https://rickandmortyapi.com/api/"
+    private const val CACHE_SIZE = (10 * 1024 * 1024).toLong() // 10 MB
+    private const val MAX_AGE = 300 // 5 minutes
+    private const val MAX_STALE = 60 * 60 * 24 * 7 // 1 week
 
-    fun provideCache(context: Context): Cache {
-        val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
-        Log.i(TAG,context.cacheDir.path)
-        return Cache(File(context.cacheDir, "http-cache"), cacheSize)
+    private lateinit var apiService: RickAndMortyApiService
+
+    private fun provideCache(context: Context): Cache {
+        return Cache(File(context.cacheDir, "http-cache"), CACHE_SIZE)
     }
 
-    fun provideOkHttpClient(context: Context, cache: Cache): OkHttpClient {
+    private fun provideOkHttpClient(context: Context, cache: Cache): OkHttpClient {
         return OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor { chain ->
                 var request = chain.request()
-                request = if (hasNetwork(context) == true)
-                    request.newBuilder().header("Cache-Control", "public, max-age=" + 100).build()
+                request = if (hasNetwork(context))
+                    request.newBuilder().header("Cache-Control", "public, max-age=$MAX_AGE").build()
                 else
-                    request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
-                Log.i(TAG,"provide Http client $request")
+                    request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=$MAX_STALE").build()
                 chain.proceed(request)
             }
             .build()
     }
 
-    private fun hasNetwork(context: Context): Boolean? {
-        var isConnected: Boolean? = false // Initial Value
+    private fun hasNetwork(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetworkInfo
-        if (activeNetwork != null && activeNetwork.isConnected)
-            isConnected = true
-        return isConnected
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    fun provideApiService(retrofit: Retrofit) :RickAndMortyApiService {
-        val apiService: RickAndMortyApiService by lazy {
-            retrofit.create(RickAndMortyApiService::class.java)
+    fun provideApiService(context: Context): RickAndMortyApiService {
+        if (!::apiService.isInitialized) {
+            val cache = provideCache(context)
+            val okHttpClient = provideOkHttpClient(context, cache)
+            val retrofit = provideRetrofit(okHttpClient)
+            apiService = retrofit.create(RickAndMortyApiService::class.java)
         }
         return apiService
     }
