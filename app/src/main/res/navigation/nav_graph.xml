@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.himanshu.rickandmorty.MainFragment"
+        android:name="com.himanshu.rickandmorty.ui.fragments.MainFragment"
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.himanshu.rickandmorty.DetailFragment"
+        android:name="com.himanshu.rickandmorty.ui.fragments.DetailFragment"
         android:label="DetailFragment">
         <argument
             android:name="character"

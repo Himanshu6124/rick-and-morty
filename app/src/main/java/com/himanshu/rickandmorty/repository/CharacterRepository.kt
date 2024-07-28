@@ -1,4 +1,6 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.repository
+
+import com.himanshu.rickandmorty.network.RickAndMortyApiService
 
 class CharacterRepository(private val apiService: RickAndMortyApiService) {
 

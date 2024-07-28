@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.himanshu.rickandmorty.repository.CharacterRepository
+import com.himanshu.rickandmorty.viewmodel.CharacterViewModel
+import com.himanshu.rickandmorty.viewmodel.CharacterViewModelFactory
+import com.himanshu.rickandmorty.R
+import com.himanshu.rickandmorty.network.RetrofitInstance
+import com.himanshu.rickandmorty.network.RickAndMortyApiService
+import com.himanshu.rickandmorty.ui.adapters.CharacterAdapter
 import com.himanshu.rickandmorty.databinding.FragmentMainBinding
 
 

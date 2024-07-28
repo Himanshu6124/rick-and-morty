@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.himanshu.rickandmorty.R
 import com.himanshu.rickandmorty.model.Character
 
 class CharacterAdapter( private val onItemClick: (Character) -> Unit) :

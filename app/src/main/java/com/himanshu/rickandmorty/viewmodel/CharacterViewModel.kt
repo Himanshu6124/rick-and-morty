@@ -1,10 +1,11 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.himanshu.rickandmorty.repository.CharacterRepository
 import com.himanshu.rickandmorty.model.CharacterResponse
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

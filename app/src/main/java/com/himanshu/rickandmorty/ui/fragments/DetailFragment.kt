@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -42,6 +42,7 @@ class DetailFragment : Fragment() {
         }
     }
 
+    /* to perform cleanup */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

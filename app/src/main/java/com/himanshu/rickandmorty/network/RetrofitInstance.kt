@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.network
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -53,7 +53,7 @@ object RetrofitInstance {
     }
 
     fun provideApiService(context: Context): RickAndMortyApiService {
-        if (!::apiService.isInitialized) {
+        if (!RetrofitInstance::apiService.isInitialized) {
             val cache = provideCache(context)
             val okHttpClient = provideOkHttpClient(context, cache)
             val retrofit = provideRetrofit(okHttpClient)

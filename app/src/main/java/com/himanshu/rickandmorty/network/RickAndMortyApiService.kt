@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.network
 
 import com.himanshu.rickandmorty.model.CharacterResponse
 import retrofit2.http.GET

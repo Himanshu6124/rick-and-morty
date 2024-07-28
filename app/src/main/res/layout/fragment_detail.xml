@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".DetailFragment">
+    tools:context=".ui.fragments.DetailFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
-            android:text="Charcter name"
+            android:text="@string/charcter_name"
             android:fontFamily="casual"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text="Status :"
+                android:text="@string/character_status"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -67,7 +67,6 @@
                 android:id="@+id/statusTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alive"
                 android:fontFamily="casual"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
@@ -83,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Species :"
+                android:text="@string/character_species"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@android:color/black"
@@ -94,7 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Human"
                 android:fontFamily="casual"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
@@ -109,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Gender :"
+                android:text="@string/character_gender"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@android:color/black"
@@ -120,7 +118,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Female"
                 android:fontFamily="casual"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
@@ -135,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Origin :"
+                android:text="@string/character_origin"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@android:color/black"
@@ -146,7 +143,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="earth"
                 android:fontFamily="casual"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
@@ -163,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text="Locations :"
+                android:text="@string/characters_locations"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -174,7 +170,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="casual"
-                android:text="Citadel of Ricks"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@android:color/black" />

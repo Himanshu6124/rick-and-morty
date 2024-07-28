@@ -13,4 +13,10 @@
     <string name="origin">Origin: %1$s</string>
     <string name="location">Location: %1$s</string>
     <string name="page_42">Page: %1$s/42</string>
+    <string name="charcter_name">Charcter name</string>
+    <string name="character_status">Status :</string>
+    <string name="character_species">Species :</string>
+    <string name="character_gender">Gender :</string>
+    <string name="character_origin">Origin :</string>
+    <string name="characters_locations">Locations :</string>
 </resources>

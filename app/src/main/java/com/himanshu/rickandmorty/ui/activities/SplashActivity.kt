@@ -1,4 +1,4 @@
-package com.himanshu.rickandmorty
+package com.himanshu.rickandmorty.ui.activities
 
 import android.content.Intent
 import android.os.Build
@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.himanshu.rickandmorty.R
 import com.himanshu.rickandmorty.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -52,6 +53,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    /* to perform cleanup */
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
