@@ -3,7 +3,7 @@
 This is an Android application that displays a list of characters from the Rick and Morty series in a RecyclerView using the Rick and Morty API and Jetpack libraries. The app follows the MVVM (Model-View-ViewModel) architecture for better separation of concerns and maintainability.
 
 ## Demo Video
-[Link to demo video](rick_and_morty_demo_video.mp4)
+[Link to demo video](https://drive.google.com/file/d/1E6U7BfPQTbf3xAUTSse2WNDFkdUYbWFB/view?usp=sharing)
 
 ## Table of Contents
 - [Features](#features)
