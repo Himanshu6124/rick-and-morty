@@ -27,9 +27,11 @@ class CharacterAdapter( private val onItemClick: (Character) -> Unit) :
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = characters[position]
         holder.nameTextView.text = character.name
-        Glide
-            .with(holder.itemView.context)
-            .load(character.image).into(holder.imageView)
+        Glide.with(holder.itemView.context)
+            .load(character.image)
+            .placeholder(R.drawable.loading_image)
+            .error(R.drawable.error_image)
+            .into(holder.imageView)
 
 
         holder.itemView.setOnClickListener { onItemClick(character) }
