@@ -60,28 +60,26 @@ class MainFragment : Fragment() {
         })
 
         binding.getNextList.setOnClickListener {
-            if (characterViewModel.currentPage == 42) {
+            if (characterViewModel.currentPage.value == 42) {
                 Toast.makeText(
                     requireContext(),
                     resources.getString(R.string.last_page_warning),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                characterViewModel.currentPage++
-                characterViewModel.getCharacters(characterViewModel.currentPage)
+                characterViewModel.getNextPage()
             }
         }
 
         binding.getPrevList.setOnClickListener {
-            if (characterViewModel.currentPage == 1) {
+            if (characterViewModel.currentPage.value == 1) {
                 Toast.makeText(
                     requireContext(),
                     resources.getString(R.string.first_page_warning),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                characterViewModel.currentPage--
-                characterViewModel.getCharacters(characterViewModel.currentPage)
+                characterViewModel.getPrevPage()
             }
         }
     }
@@ -89,9 +87,7 @@ class MainFragment : Fragment() {
 
     private fun addSubscribers() {
         characterViewModel.characters.observe(viewLifecycleOwner) {
-            Log.i(TAG, "Response is $it")
             val adapter = CharacterAdapter(it.results) { character ->
-                Log.i(TAG, "character clicked ${character.name}")
                 val action = MainFragmentDirections.actionMainFragmentToDetailFragment(character)
                 findNavController().navigate(action)
             }
@@ -113,8 +109,8 @@ class MainFragment : Fragment() {
             }
         }
 
-//        characterViewModel.currentPage.observe(viewLifecycleOwner){ pageNumber->
-//            binding.pageNumber.text = getString(R.string.page_42, pageNumber.toString())
-//        }
+        characterViewModel.currentPage.observe(viewLifecycleOwner) { pageNumber ->
+            binding.pageNumber.text = getString(R.string.page_42, pageNumber.toString())
+        }
     }
 }

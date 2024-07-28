@@ -11,7 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
-    val TAG = "CharacterViewModel"
+    private val TAG = "CharacterViewModel"
     private val _characters  = MutableLiveData<CharacterResponse>()
     val characters  : LiveData<CharacterResponse> = _characters
 
@@ -23,17 +23,19 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
     val errorMessage: LiveData<String?> = _errorMessage
     private var searchJob: Job? = null
 
-    var currentPage = 1
+    var currentPage = MutableLiveData(1)
 
     init {
-        getCharacters(currentPage)
+        getCharacters(currentPage.value?:1)
     }
 
-    fun getCharacters(page :Int){
+    private fun getCharacters(page :Int){
+        Log.i(TAG,"PAge is $page ")
         viewModelScope.launch {
             try {
                 _isLoading.postValue(true)
                 val res = repository.getCharacters(page)
+                Log.i(TAG,"res for $page is $res")
                 _isLoading.postValue(false)
                 _characters.postValue(res)
             }
@@ -63,16 +65,12 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
         }
     }
 
-
-//    private fun onError(errorMessage: String?) {
-//
-//        val message = if (errorMessage.isNullOrBlank() or errorMessage.isNullOrEmpty()) "Unknown Error"
-//        else errorMessage
-//
-//        errorMessage = StringBuilder("ERROR: ")
-//            .append("$message some data may not displayed properly").toString()
-//
-//        _isError.value = true
-//        _isLoading.value = false
-//    }
+    fun getNextPage() {
+        currentPage.value = currentPage.value?.plus(1)
+        getCharacters(currentPage.value?:1)
+    }
+    fun getPrevPage() {
+        currentPage.value = currentPage.value?.minus(1)
+        getCharacters(currentPage.value?:1)
+    }
 }
